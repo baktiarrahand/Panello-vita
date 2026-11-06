@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
-<head><link rel="manifest" href="manifest.json">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pannello Vita - Dashboard</title>
@@ -264,73 +264,3 @@
             <span class="text-xs ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}">${t.text}</span>
           </div>
           <button onclick="removeTodo(${idx})" class="text-slate-500 hover:text-rose-400 px-1"><i class="fa-solid fa-xmark text-xs"></i></button>
-        `;
-        c.appendChild(item);
-      });
-    }
-
-    function toggleTodo(idx) {
-      todos[idx].done = !todos[idx].done;
-      saveTodos();
-      renderTodos();
-    }
-
-    function removeTodo(idx) {
-      todos.splice(idx, 1);
-      saveTodos();
-      renderTodos();
-    }
-
-    function addNewTaskPrompt() {
-      const text = prompt("Aggiungi nuova cosa da fare:");
-      if (text && text.trim()) {
-        todos.push({ id: Date.now(), text: text.trim(), done: false });
-        saveTodos();
-        renderTodos();
-      }
-    }
-
-    function saveTodos() {
-      localStorage.setItem('my_todos', JSON.stringify(todos));
-    }
-
-    function switchTab(tab) {
-      ['panel', 'brain', 'review'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.add('hidden');
-        document.getElementById(`btn-tab-${t}`).className = 'flex flex-col items-center justify-center flex-1 py-1 text-slate-400 hover:text-slate-200 transition';
-      });
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
-      const activeColor = tab === 'panel' ? 'text-indigo-400' : tab === 'brain' ? 'text-purple-400' : 'text-emerald-400';
-      document.getElementById(`btn-tab-${tab}`).className = `flex flex-col items-center justify-center flex-1 py-1 ${activeColor} font-semibold transition`;
-    }
-
-    function askBrain(topic) {
-      const box = document.getElementById('brainAnswerBox');
-      const title = document.getElementById('brainAnswerTitle');
-      const text = document.getElementById('brainAnswerText');
-      box.classList.remove('hidden');
-
-      if (topic === 'assicurazione') {
-        title.innerText = "Polizza Volkswagen Tiguan TDI";
-        text.innerText = "La polizza auto è attiva. Ricordati di verificare la scadenza semestrale della ricevuta sul portale prima dell'estate.";
-      } else if (topic === 'ticketsms') {
-        title.innerText = "Pratica Rimborso TicketSms";
-        text.innerText = "Evento Love Paura 2026: rimborso elaborato e confermato il 5 Nov. Accredito previsto entro 3-5 giorni lavorativi su conto/carta.";
-      } else if (topic === 'unibo') {
-        title.innerText = "Bando Tasse UNIBO ASES 2026/27";
-        text.innerText = "Matricola Storia. Avviso di contribuzione studentesca ricevuto via email. Verificare la scadenza per la presentazione ISEE sul portale Studenti Online.";
-      }
-    }
-
-    function saveDailyReview() {
-      const score = document.getElementById('dayRating').value;
-      const note = document.getElementById('reviewNote').value;
-      document.getElementById('todayScoreLabel').innerText = score;
-      localStorage.setItem('daily_review_today', JSON.stringify({ score, note, date: new Date().toISOString() }));
-      alert(`Check-in salvato con successo! Voto assegnato: ${score}/10.`);
-    }
-
-    renderTodos();
-  </script>
-</body>
-</html>
